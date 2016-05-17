@@ -1,0 +1,18 @@
+---
+name: job-2
+
+description: "The job-2 server provides a single instance job-2"
+
+templates:
+  job_2.conf.erb: config/job_2_hba.conf
+
+packages:
+  - common
+  - job-2-9.4.6
+
+properties:
+  job_2.databases.db_scheme:
+    description: "The database scheme"
+  job_2.databases.port:
+    description: "The database scheme"
+    default: 5432

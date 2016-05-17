@@ -1,0 +1,18 @@
+---
+name: job-3
+
+description: "The job-3 server provides a single instance job-3"
+
+templates:
+  job_3.conf.erb: config/job_3_hba.conf
+
+packages:
+  - common
+  - job-3-9.4.6
+
+properties:
+  job_3.databases.db_scheme:
+    description: "The database scheme"
+  job_3.databases.map:
+    description: "The database scheme"
+    default: {}
