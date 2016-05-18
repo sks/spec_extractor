@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -13,7 +14,7 @@ import (
 
 func main() {
 
-	logger := log.New(os.Stdout, "", 0)
+	logger := log.New(os.Stderr, "", 0)
 
 	var directoryToCheck string
 
@@ -39,6 +40,6 @@ func main() {
 	}
 	logger.Printf("Obtained %d specs from %q", len(specs), directoryToCheck)
 	d, _ := yaml.Marshal(&specs)
-	logger.Printf("%s", d)
+	fmt.Println(fmt.Sprintf("%s", d))
 
 }
