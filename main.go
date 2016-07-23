@@ -41,5 +41,4 @@ func main() {
 	logger.Printf("Obtained %d specs from %q", len(specs), directoryToCheck)
 	d, _ := yaml.Marshal(&specs)
 	fmt.Println(fmt.Sprintf("%s", d))
-
 }

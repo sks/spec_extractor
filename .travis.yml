@@ -1,0 +1,24 @@
+language: go
+go:
+- 1.6
+install:
+- go get -v ./...
+- go get github.com/onsi/gomega
+- go get github.com/onsi/ginkgo/ginkgo
+- export PATH=$PATH:$HOME/gopath/bin
+script:
+- GO15VENDOREXPERIMENT=1 $HOME/gopath/bin/ginkgo -r --randomizeAllSpecs --failOnPending --randomizeSuites --race
+- for OS in darwin linux; do GOOS=$OS GOARCH=amd64 go build -o binaries/spec_extractor-$OS main.go; done;
+- GOOS=windows go build -o binaries/spec_extractor-windows
+deploy:
+  provider: releases
+  skip_cleanup: true
+  overwrite: true
+  api_key:
+    secure: uAk4z3wLsONq+xo6mbMourjurnxDalwfT+PytHkryAdzhGYAMuhtFnJbN1Ed4DDCh74ud/C2tBiFjXh7aMkkYq7KqFHrzMpsL9XP0weA7uwP/Y1FOWS4vSnNx/8jXxERh/RoCQa3UNJCRpy3Ztm6LvXAtrMH1OUaX0Gm4UiRcB9+Mu7VF/GgpM++/mxeEP+357ghCGTGAl9WNhCox+T4p4QshklVvlQPjBi716ViMD9M9YdC0XbIOwT4zkPkvI/c3vOgBD6YLWe2spIx37gDT9s0HD8WzgDxGrApBM0ah6D440O2hGAcKYDXFoBA+BIS6783SJ04TG+2MEr8yqyg6QP6kRnh3rUkPX4wRg0zkt6C36w0KAMG0McskYg8yb11FEh1dIl+lW1bNEdqgLCJXQJer5fDE+PUYAv3YPTMo4zZe5pw0qwUFWH7QJyzesO07XUFM2fjipJGiQxcanA0HwMbg1fxcUTMyDWHiYXYpXSwaotD5Ss0P6mC3QdhUF621Iuzyp+U1nJJxHivUTq37JsEzfPk+DwWKmAO2XLBUS5NuVpUt6L/6SupIblhsaRrSPlJ33oh5Df+j4kFDYUGlIqFOx8aIuVADMZCfn4kucpO9b8T4aE2gtnJq4Kl2sI9mm5E4be7eUFi9b76P1pYh24b7ngwjXh3m9Eca42dOM0=
+  file:
+    - "binaries/spec_extractor-darwin"
+    - "binaries/spec_extractor-windows"
+    - "binaries/spec_extractor-linux"
+  on:
+    tags: true

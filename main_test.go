@@ -21,8 +21,7 @@ var _ = Describe("Spec Extractor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(session).Should(gexec.Exit(0))
 
-			Eventually(session.Out).Should(gbytes.Say("Obtained 3 spec files from \"fixtures/release\""))
-			Eventually(session.Out).Should(gbytes.Say("Obtained 6 specs from \"fixtures/release\""))
+			Eventually(session.Out).Should(gbytes.Say("job_1.databases.db_scheme"))
 		})
 	})
 
@@ -33,7 +32,7 @@ var _ = Describe("Spec Extractor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(session).Should(gexec.Exit(1))
 
-			Expect(session.Out.Contents()).To(ContainSubstring("Please pass the directory to traverse with \"-d\" flag"))
+			Expect(session.Err.Contents()).To(ContainSubstring("Please pass the directory to traverse with \"-d\" flag"))
 		})
 
 		It("Errors when the given folder does not exists", func() {
@@ -44,7 +43,7 @@ var _ = Describe("Spec Extractor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(session).Should(gexec.Exit(1))
 
-			Expect(session.Out.Contents()).To(ContainSubstring("no such file or directory"))
+			Expect(session.Err).Should(gbytes.Say("no such file or directory"))
 		})
 
 		It("Errors when there is a invalid spec file in invalid release", func() {
@@ -55,7 +54,7 @@ var _ = Describe("Spec Extractor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(session).Should(gexec.Exit(1))
 
-			Expect(session.Out.Contents()).To(ContainSubstring("is not a valid spec file, yaml: unmarshal errors"))
+			Expect(session.Err).Should(gbytes.Say("is not a valid spec file, yaml: unmarshal errors"))
 		})
 	})
 })
