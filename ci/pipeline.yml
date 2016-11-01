@@ -10,18 +10,14 @@ resources:
   source:
     uri: https://github.com/cloudfoundry/cf-release
     branch: master
-- name: every-1m
-  type: time
-  source: {interval: 1m}
-
 
 jobs:
 - name: extract-cf-release-specs
   plan:
-  - get: spec_extractor
-    trigger: true
-  - get: bosh_release
-    trigger: true
-    resource: cf-release
+  - aggregate:
+    - get: spec_extractor
+    - get: bosh_release
+      trigger: true
+      resource: cf-release
   - task: extract_specs
     file: spec_extractor/ci/task/extract_spec.yml
